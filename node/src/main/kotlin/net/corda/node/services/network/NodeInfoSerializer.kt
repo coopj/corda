@@ -82,18 +82,13 @@ class NodeInfoSerializer(private val nodePath: Path,
             logger.info("$nodeInfoDirectory isn't a Directory, not loading NodeInfo from files")
             return result
         }
-        for (file in nodeInfoDirectory.toFile().walk().maxDepth(1))
+        for (file in nodeInfoDirectory.toFile().walk().maxDepth(1)) {
             if (file.isFile) {
-                try {
-                    logger.info("Reading NodeInfo from file: $file")
-                    val nodeInfo = processFile(file)?.let {
-                        result.add(it)
-                    }
-                } catch (e: Exception) {
-                    logger.error("Exception parsing NodeInfo from file. $file: " + e)
-                    e.printStackTrace()
+                processFile(file)?.let {
+                    result.add(it)
                 }
             }
+        }
         logger.info("Successfully read ${result.size} NodeInfo files.")
         return result
     }
