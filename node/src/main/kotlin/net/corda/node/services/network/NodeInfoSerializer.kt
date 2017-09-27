@@ -138,8 +138,7 @@ class NodeInfoSerializer(private val nodePath: Path,
         try {
             logger.info("Reading NodeInfo from file: $file")
             val signedData: SignedData<NodeInfo> = ByteSequence.of(file.readBytes()).deserialize()
-            val nodeInfo = signedData.verified()
-            return nodeInfo
+            return signedData.verified()
         } catch (e: Exception) {
             logger.warn("Exception parsing NodeInfo from file. $file: $e")
             e.printStackTrace()
